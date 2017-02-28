@@ -11,8 +11,29 @@
     tools:context="cofc.edu.myasynctask.MainActivity">
 
     <TextView
-        android:id="@+id/testView"
+        android:id="@+id/status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="Status displayed here..."
+        android:layout_marginTop="97dp"
+        android:layout_below="@+id/button"
+        android:layout_marginEnd="17dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClickStartTask"
+        android:text="Guess Password"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Answer displayed here..."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/status"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="100dp"
+        android:id="@+id/answer" />
 </RelativeLayout>
