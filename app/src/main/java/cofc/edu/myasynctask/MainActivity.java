@@ -1,5 +1,6 @@
 package cofc.edu.myasynctask;
 
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,16 +19,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickStartTask(View v) {
-        final long RANGE = 10000000;
+        final long RANGE = 1000000;
+        final long PUBLISH_RATE = 10;
 
-        long guess = 0;
-        Random rand = new Random();
-
-        while (guess != PASSWORD) {
-            guess = Math.abs(rand.nextLong() % RANGE);
-        }
-        displayProgress("Done!!");
-        displayAnswer(guess);
+        PasswordCheck checker = new PasswordCheck();
+        checker.execute(RANGE, PUBLISH_RATE);
 
     }
 
@@ -41,5 +37,52 @@ public class MainActivity extends AppCompatActivity {
 
         TextView textView = (TextView) findViewById(R.id.answer);
         textView.setText(message);
+    }
+
+    private class PasswordCheck extends AsyncTask<Long, String, Long> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Long doInBackground(Long... params) {
+            long range = params[0];
+            long publishRate = params[1];
+
+            long guess = 0;
+            long count = 0;
+            Random rand = new Random();
+
+            while (guess != PASSWORD) {
+                guess = Math.abs(rand.nextLong() % range);
+                count++;
+
+                if(count % publishRate == 0 ) {
+                    publishProgress("Number of guesses: " + count, "  Last guess: " + guess);
+
+                }
+            }
+
+            return guess;
+        }
+
+        @Override
+        protected void onPostExecute(Long aLong) {
+            super.onPostExecute(aLong);
+            displayAnswer(aLong);
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            String message = "";
+            for(String str: values) {
+                message += str + "," ;
+            }
+            displayProgress(message);
+        }
+
+
     }
 }
